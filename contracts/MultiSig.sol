@@ -9,7 +9,6 @@ contract MultiSig is IERC20, LBToken {
 
     //addresses that can sign transactions
     mapping(address => uint) private _owners;      
-    //uint tokenBalance;
     //transaction ID
     uint _txId = 1;
     uint8 countOwners;
@@ -17,7 +16,6 @@ contract MultiSig is IERC20, LBToken {
     struct Transaction {
         address from;
         address to;
-        //IERC20 tokens;
         uint money;
         uint8 countSign; 
     }
@@ -50,12 +48,13 @@ contract MultiSig is IERC20, LBToken {
         countOwners = 1;
     }
 
-    function addOwner(address _newOwner) isOwner() lessThreeOwners() public {
+    function addOwner(address _newOwner) isOwner() lessThreeOwners() public returns(bool) {
         require(_newOwner != msg.sender, "'newOwner' can't be msg.sender");
         require(_newOwner != address(0),"'newOwner' can't be zero address");
         require(_owners[_newOwner] != 1, "'_newOwner' can't be existed owners");
         _owners[_newOwner] = 1;
         countOwners++;
+        return true;
     }
 
     function showOwners() public view returns(uint) {
@@ -73,7 +72,6 @@ contract MultiSig is IERC20, LBToken {
         Transaction memory transaction;
         transaction.from = msg.sender;
         transaction.to = _to;
-        //transaction.tokens = new LBToken();
         transaction.money = _amount;
         transaction.countSign = 1;
         signature[msg.sender] = 1;

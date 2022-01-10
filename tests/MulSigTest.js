@@ -1,11 +1,18 @@
-const MultSig = artifacts.require("./MulSig.sol");
+const { assert, expect } = require("chai");
+const { waffle } = require("hardhat");
+const { accounts, contract } = require('@openzeppelin/test-environment');
+const MultSig = artifacts.require("/contracts/MultiSig.sol");
 
-contract("MultSig", (accounts) => {
-    const creatorAddress = accounts[0];
-    const secondOwner = accounts[1];
-    const thirdOwner = accounts[2];
+describe("MultiSig", function () {
+    var [creatorAddress, secondOwner, thirdOwner, externalAddress] = accounts;
 
-    it("should be able add new owner", async() => {
-        const contractInstance = await MultSig.new();
+    it("should not be able add new owner when address that calls function is not the owner that can sign",
+     async () => {
+        const hardhatMulSig = await MultSig.deploy();
+        const result = await hardhatMulSig.addOwner(thirdOwner, {from: externalAddress});
+        expect(result).to.equal(true);
+    });
+    it("Should set the right owner", async () => {
+        expect(await hardhatMulSig.invest(5)).to.be.not.null;
     })
 })
