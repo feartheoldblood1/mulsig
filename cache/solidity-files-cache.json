@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/home/user/HardHatProjects/MultSigFT/contracts/MultiSig.sol": {
-      "lastModificationDate": 1641675579347,
-      "contentHash": "fe6f5a67629a16b9a15ea6acd4cdbfff",
+      "lastModificationDate": 1641836661584,
+      "contentHash": "5a6823ee892a31e265187bb04bc6a33e",
       "sourceName": "contracts/MultiSig.sol",
       "solcConfig": {
         "version": "0.5.3",
@@ -29,50 +29,14 @@
         }
       },
       "imports": [
-        "./Token.sol"
+        "./IERC20.sol",
+        "./LBToken.sol"
       ],
       "versionPragmas": [
         ">=0.5.0"
       ],
       "artifacts": [
         "MultiSig"
-      ]
-    },
-    "/home/user/HardHatProjects/MultSigFT/contracts/Token.sol": {
-      "lastModificationDate": 1641675126700,
-      "contentHash": "5a1da435a63a4cb428c3899a19d6b19d",
-      "sourceName": "contracts/Token.sol",
-      "solcConfig": {
-        "version": "0.5.3",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/token/ERC20/ERC20.sol"
-      ],
-      "versionPragmas": [
-        ">=0.5.0"
-      ],
-      "artifacts": [
-        "LBCToken"
       ]
     },
     "/home/user/HardHatProjects/MultSigFT/node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol": {
@@ -217,6 +181,76 @@
       ],
       "artifacts": [
         "SafeMath"
+      ]
+    },
+    "/home/user/HardHatProjects/MultSigFT/contracts/IERC20.sol": {
+      "lastModificationDate": 1641836683812,
+      "contentHash": "8a87956c01eb2e881f0e0bb2a1fdd008",
+      "sourceName": "contracts/IERC20.sol",
+      "solcConfig": {
+        "version": "0.5.3",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [],
+      "artifacts": [
+        "IERC20"
+      ]
+    },
+    "/home/user/HardHatProjects/MultSigFT/contracts/LBToken.sol": {
+      "lastModificationDate": 1641841931484,
+      "contentHash": "380ee430d3d33d5773115214b51450e8",
+      "sourceName": "contracts/LBToken.sol",
+      "solcConfig": {
+        "version": "0.5.3",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IERC20.sol"
+      ],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "LBToken"
       ]
     }
   }

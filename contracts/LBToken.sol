@@ -19,15 +19,15 @@ contract LBToken is IERC20 {
         balances[msg.sender] = totalSupply_;
     }
 
-    function totalSupply() public override view returns (uint256) {
+    function totalSupply() public view returns (uint256) {
         return totalSupply_;
     }
 
-    function balanceOf(address tokenOwner) public override view returns (uint256) {
+    function balanceOf(address tokenOwner) public view returns (uint256) {
         return balances[tokenOwner];
     }
 
-    function transfer(address receiver, uint numTokens) public override returns (bool) {
+    function transfer(address receiver, uint numTokens) public returns (bool) {
         require(numTokens <= balances[msg.sender]);
         balances[msg.sender] = balances[msg.sender] - numTokens;
         balances[receiver] = balances[receiver] + numTokens;
@@ -35,17 +35,17 @@ contract LBToken is IERC20 {
         return true;
     }
 
-    function approve(address delegate, uint256 numTokens) public override returns (bool) {
+    function approve(address delegate, uint256 numTokens) public returns (bool) {
         allowed[msg.sender][delegate] = numTokens;
         emit Approval(msg.sender, delegate, numTokens);
         return true;
     }
 
-    function allowance(address owner, address delegate) public override view returns (uint) {
+    function allowance(address owner, address delegate) public view returns (uint) {
         return allowed[owner][delegate];
     }
 
-    function transferFrom(address owner, address buyer, uint256 numTokens) public override returns (bool) {
+    function transferFrom(address owner, address buyer, uint256 numTokens) public returns (bool) {
         require(numTokens <= balances[owner]);
         require(numTokens <= allowed[owner][msg.sender]);
         balances[owner] = balances[owner] - numTokens;
