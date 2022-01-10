@@ -1,15 +1,15 @@
 pragma solidity >=0.5.0;
 
 import "./IERC20.sol";
+import "./LBToken.sol";
 
 //@author Peter
 //@dev REFACTORING AND CHANGE LOGIC OF THE CODE
-contract MultiSig { 
+contract MultiSig is IERC20, LBToken { 
 
     //addresses that can sign transactions
-    mapping(address => uint) private _owners;
-    mapping (address => uint) balances;        
-    uint tokenBalance;
+    mapping(address => uint) private _owners;      
+    //uint tokenBalance;
     //transaction ID
     uint _txId = 1;
     uint8 countOwners;
@@ -17,7 +17,8 @@ contract MultiSig {
     struct Transaction {
         address from;
         address to;
-        uint tokens;
+        //IERC20 tokens;
+        uint money;
         uint8 countSign; 
     }
     
@@ -28,7 +29,6 @@ contract MultiSig {
 
     uint constant minCountSign = 2;
 
-    address oldSigner;
     //modifiers
     modifier lessThreeOwners() {
         require(countOwners < 3 && countOwners > 0);
@@ -48,12 +48,12 @@ contract MultiSig {
     constructor() public {
         _owners[msg.sender] = 1;
         countOwners = 1;
-        tokenBalance = 0;
     }
 
     function addOwner(address _newOwner) isOwner() lessThreeOwners() public {
         require(_newOwner != msg.sender, "'newOwner' can't be msg.sender");
         require(_newOwner != address(0),"'newOwner' can't be zero address");
+        require(_owners[_newOwner] != 1, "'_newOwner' can't be existed owners");
         _owners[_newOwner] = 1;
         countOwners++;
     }
@@ -62,22 +62,19 @@ contract MultiSig {
         return countOwners;
     }
     function invest(uint _amount) public payable{
-        tokenBalance = tokenBalance + _amount;
-    }
-
-    function checkBalance() view public returns(uint) {
-        return tokenBalance;
+        balances[msg.sender] = balances[msg.sender] + _amount;
     }
 
     function createTransaction(address _to, uint _amount) isOwner() public payable{
-        require(tokenBalance >= _amount, "'_amount' can't be more than balance");
-        require(_to != address(0),"'_to' is zero address");
+        require(balanceOf(msg.sender) >= _amount, "'_amount' can't be more than balance");
+        require(_to != address(0), "'_to' is zero address");
         uint transactionId = _txId;
 
         Transaction memory transaction;
         transaction.from = msg.sender;
         transaction.to = _to;
-        transaction.tokens = _amount;
+        //transaction.tokens = new LBToken();
+        transaction.money = _amount;
         transaction.countSign = 1;
         signature[msg.sender] = 1;
 
@@ -92,7 +89,6 @@ contract MultiSig {
     }
 
     function signTransaction(address _signer, uint _transactionId) isOwner() public payable{
-
         Transaction storage transaction = _transactions[_transactionId];   
         require(_signer != address(0), "'_signer' is zero address");
         require((_transactionId != 0) || (_transactionId >= _unsignedTransactions.length),
@@ -106,14 +102,13 @@ contract MultiSig {
         emit TransactionSigned(msg.sender, _transactionId); 
         
         if (transaction.countSign >= minCountSign) {
-            require(tokenBalance >= transaction.tokens, "balance is more or equal to tokens' transaction");
-            tokenBalance = tokenBalance - transaction.tokens;
+            require(balanceOf(msg.sender) >= transaction.money, "balance is more or equal to tokens' transaction");
+            transfer(transaction.to, transaction.money);
             signature[_signer] = 0;
-            emit TransactionCompleted(transaction.from, transaction.to, transaction.tokens, _transactionId);
+            emit TransactionCompleted(transaction.from, transaction.to, transaction.money, _transactionId);
             deleteTransaction(_transactionId);
         }
     }
-
     //don't resize unsgined transactions' array?
     function deleteTransaction(uint _transactionId) isOwner() public {
         require(_transactionId > 0, "'_transactionId has to be more 0'");

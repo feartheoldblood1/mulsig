@@ -27,10 +27,10 @@ contract LBToken is IERC20 {
         return balances[tokenOwner];
     }
 
-    function transfer(address receiver, uint256 numTokens) public override returns (bool) {
+    function transfer(address receiver, uint numTokens) public override returns (bool) {
         require(numTokens <= balances[msg.sender]);
         balances[msg.sender] = balances[msg.sender] - numTokens;
-        balances[receiver] = balances[receiver] - numTokens;
+        balances[receiver] = balances[receiver] + numTokens;
         emit Transfer(msg.sender, receiver, numTokens);
         return true;
     }
