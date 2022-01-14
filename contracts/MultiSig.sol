@@ -118,7 +118,7 @@ contract MultiSig is LBToken {
     }
 
     //don't resize unsgined transactions' array?
-    function deleteTransaction(uint _transactionId) isOwner() public {
+    function deleteTransaction(uint _transactionId) isOwner() private {
         require(_transactionId > 0, "'_transactionId' has to be more 0'");
         delete _unsignedTransactions[_transactionId - 1];
     }

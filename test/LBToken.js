@@ -33,7 +33,7 @@ describe("LBToken contract", () => {
             await hardhatLBToken.transfer(ExternalAddr1.address, amountWei);
             addr1Balance = await hardhatLBToken.balanceOf(ExternalAddr1.address);
             expect(addr1Balance).to.equal(amountWei);
-    
+
             await hardhatLBToken.connect(ExternalAddr1).transfer(ExternalAddr2.address, amountWei);
             addr2Balance = await hardhatLBToken.balanceOf(ExternalAddr2.address);
             expect(addr2Balance).to.equal(amountWei);
@@ -50,7 +50,7 @@ describe("LBToken contract", () => {
 
         it("Should not be able to transfer to the sender from the sender", async ()=> {
             await expect(hardhatLBToken.connect(owner).transfer(owner.address, amountWei)
-            ).to.be.revertedWith("sender cannot send transfer money himself");
+            ).to.be.revertedWith("sender cannot send transfer tokens himself");
         });
 
         it("Should not be able send from an account that doesn't have enough money",
@@ -62,7 +62,7 @@ describe("LBToken contract", () => {
         it("Should not be able send to zero address from account",
          async () => {
             ownerBalance = await hardhatLBToken.balanceOf(owner.address);
-            await expect(hardhatLBToken.connect(owner).transferFrom(owner.address, zeroAddr, amountWei),
+            await expect(hardhatLBToken.connect(ExternalAddr1).transferFrom(ExternalAddr1.address, zeroAddr, amountWei),
             "'_buyer' cannot be zero address");
         });
 
