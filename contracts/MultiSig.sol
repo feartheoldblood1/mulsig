@@ -50,14 +50,13 @@ contract MultiSig is LBToken {
         countOwners = 1;
     }
 
-    function addOwner(address _newOwner) isOwner() lessThreeOwners() public returns(bool) {
+    function addOwner(address _newOwner) isOwner() lessThreeOwners() public {
         require(_newOwner != msg.sender, "'newOwner' can't be msg.sender");
         require(_newOwner != address(0), "'newOwner' can't be zero address");
         require(_owners[_newOwner] != 1, "'_newOwner' can't be existed owners");
         
         _owners[_newOwner] = 1;
         countOwners++;
-        return true;
     }
 
     function showOwners() public view returns(uint) {
@@ -92,7 +91,7 @@ contract MultiSig is LBToken {
         return _unsignedTransactions;
     }
 
-    function signTransaction(address _signer, uint _transactionId) isOwner() public payable returns (bool) {
+    function signTransaction(address _signer, uint _transactionId) isOwner() public payable {
         require(_signer != address(0), "'_signer' is zero address");
         require(_transactionId != 0,"'_tranzactionId' is equal 0");
         require(_transactionId >= _unsignedTransactions.length, "'_transactionId' is more than length of '_unsignedTransactions'");
@@ -114,7 +113,6 @@ contract MultiSig is LBToken {
             emit TransactionCompleted(transaction.from, transaction.to, transaction.money, _transactionId);
             deleteTransaction(_transactionId);
         }
-        return true;
     }
 
     //don't resize unsgined transactions' array?

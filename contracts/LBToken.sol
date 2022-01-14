@@ -14,7 +14,7 @@ contract LBToken is IERC20 {
 
     mapping(address => mapping (address => uint)) allowed;
 
-    uint256 totalSupply_ = 10 ether;
+    uint256 totalSupply_ = 10000000;
     
     modifier onlyOwner() {
         require(msg.sender == owner);
@@ -38,6 +38,7 @@ contract LBToken is IERC20 {
         require(_numTokens <= balances[msg.sender], "number of tokens has to be more than balances of the sender");
         require(_receiver != address(0), "receiver cannot be zero address");
         require(_receiver != msg.sender, "sender cannot send transfer tokens himself");
+        require(_numTokens >= 0, "'_numTokens' has to be more or equal zero");
         balances[msg.sender] = balances[msg.sender] - _numTokens;
         balances[_receiver] = balances[_receiver] + _numTokens;
         emit Transfer(msg.sender, _receiver, _numTokens);
