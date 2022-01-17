@@ -5,7 +5,6 @@ import "./LBToken.sol";
 
 ///@title MultiSigWallet
 ///@author Peter
-///@dev REFACTORING AND CHANGE LOGIC OF THE CODE
 contract MultiSig is LBToken { 
 
     //addresses that can sign transactions
@@ -96,8 +95,6 @@ contract MultiSig is LBToken {
         require(_transactionId >= _unsignedTransactions.length, "'_transactionId' is more than length of '_unsignedTransactions'");
         require(_owners[_signer] == 1, "'owners' that cant sign a transaction");
         require(signature[_signer] != 1, "owners cant sign more than one time for one transaction");
-        //require();
-        
 
         Transaction storage transaction = _transactions[_transactionId];
 
