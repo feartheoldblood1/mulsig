@@ -1,4 +1,4 @@
-pragma solidity >=0.5.0;
+pragma solidity >=0.5.0 <0.9.0;
 
 import "./IERC20.sol";
 import "./LBToken.sol";
@@ -9,7 +9,7 @@ import "./LBToken.sol";
 contract MultiSig is LBToken { 
 
     //addresses that can sign transactions
-    mapping(address => uint) private _owners;      
+    mapping(address => uint) public _owners;      
 
     //transaction ID
     uint _txId = 1;
@@ -18,7 +18,7 @@ contract MultiSig is LBToken {
     struct Transaction {
         address from;
         address to;
-        uint money;
+        uint tokens;
         uint8 countSign; 
     }
     
@@ -51,8 +51,8 @@ contract MultiSig is LBToken {
     }
 
     function addOwner(address _newOwner) isOwner() lessThreeOwners() public {
-        require(_newOwner != msg.sender, "'newOwner' can't be msg.sender");
         require(_newOwner != address(0), "'newOwner' can't be zero address");
+        require(_newOwner != msg.sender, "'newOwner' can't be msg.sender");
         require(_owners[_newOwner] != 1, "'_newOwner' can't be existed owners");
         
         _owners[_newOwner] = 1;
@@ -67,7 +67,7 @@ contract MultiSig is LBToken {
         balances[msg.sender] = balances[msg.sender] + _amount;
     }
 
-    function createTransaction(address _to, uint _amount) isOwner() public payable returns(bool) {
+    function createTransaction(address _to, uint _amount) isOwner() public payable{
         require(balanceOf(msg.sender) >= _amount, "'_amount' can't be more than balance");
         require(_to != address(0), "'_to' is zero address");
 
@@ -76,7 +76,7 @@ contract MultiSig is LBToken {
         Transaction memory transaction;
         transaction.from = msg.sender;
         transaction.to = _to;
-        transaction.money = _amount;
+        transaction.tokens = _amount;
         transaction.countSign = 1;
         signature[msg.sender] = 1;
 
@@ -84,7 +84,6 @@ contract MultiSig is LBToken {
         _unsignedTransactions.push(transactionId);
         _txId++;
         emit TransactionCreated(msg.sender, _to, _amount, transactionId);
-        return true;
     }
 
     function getUnsignedTransactions() view public returns (uint[] memory) {
@@ -107,10 +106,10 @@ contract MultiSig is LBToken {
         emit TransactionSigned(msg.sender, _transactionId); 
         
         if (transaction.countSign >= minCountSign) {
-            require(balanceOf(msg.sender) >= transaction.money, "balance is more or equal to tokens' transaction");
-            transfer(transaction.to, transaction.money);
+            require(balanceOf(msg.sender) >= transaction.tokens, "balance is more or equal to tokens' transaction");
+            transfer(transaction.to, transaction.tokens);
             signature[_signer] = 0;
-            emit TransactionCompleted(transaction.from, transaction.to, transaction.money, _transactionId);
+            emit TransactionCompleted(transaction.from, transaction.to, transaction.tokens, _transactionId);
             deleteTransaction(_transactionId);
         }
     }
