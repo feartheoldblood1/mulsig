@@ -37,8 +37,8 @@
       ]
     },
     "/home/pete6/mulsigfromgit/contracts/MultiSig.sol": {
-      "lastModificationDate": 1642173353659,
-      "contentHash": "2caa894267deb0050010ec1afd47235c",
+      "lastModificationDate": 1642410559054,
+      "contentHash": "a814f18e416e775f4ed188f0b8a17ab9",
       "sourceName": "contracts/MultiSig.sol",
       "solcConfig": {
         "version": "0.5.3",
@@ -68,15 +68,15 @@
         "./LBToken.sol"
       ],
       "versionPragmas": [
-        ">=0.5.0"
+        ">=0.5.0 <0.9.0"
       ],
       "artifacts": [
         "MultiSig"
       ]
     },
     "/home/pete6/mulsigfromgit/contracts/LBToken.sol": {
-      "lastModificationDate": 1642169822096,
-      "contentHash": "efe9adc9577c9c6f6f72a4635b2eed8f",
+      "lastModificationDate": 1642405137890,
+      "contentHash": "0d14677589bb450b1a98cf8f63abfde8",
       "sourceName": "contracts/LBToken.sol",
       "solcConfig": {
         "version": "0.5.3",
@@ -105,7 +105,7 @@
         "./IERC20.sol"
       ],
       "versionPragmas": [
-        ">=0.5.0"
+        ">=0.5.0 <0.9.0"
       ],
       "artifacts": [
         "LBToken"
