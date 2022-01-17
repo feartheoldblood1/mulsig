@@ -39,7 +39,7 @@ contract MultiSig is LBToken {
         require(_owners[msg.sender] == 1, "only owner is avaiable");
         _;
     }
-    
+
     //events
     event TransactionCreated(address from, address to, uint amount, uint transactionId);
     event TransactionSigned(address by, uint transactionId);
@@ -92,10 +92,11 @@ contract MultiSig is LBToken {
 
     function signTransaction(address _signer, uint _transactionId) isOwner() public payable {
         require(_signer != address(0), "'_signer' is zero address");
-        require(_transactionId != 0,"'_tranzactionId' is equal 0");
+        require(_transactionId != 0, "'_tranzactionId' is equal 0");
         require(_transactionId >= _unsignedTransactions.length, "'_transactionId' is more than length of '_unsignedTransactions'");
         require(_owners[_signer] == 1, "'owners' that cant sign a transaction");
         require(signature[_signer] != 1, "owners cant sign more than one time for one transaction");
+        //require();
         
 
         Transaction storage transaction = _transactions[_transactionId];
