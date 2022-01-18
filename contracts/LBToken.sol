@@ -64,7 +64,7 @@ contract LBToken is IERC20 {
         require(_numTokens >= 0, "'_numTokens' has to be more or equal zero");
         balances[_owner] = balances[_owner] - _numTokens;
         allowed[_owner][msg.sender] = allowed[_owner][msg.sender] - _numTokens;
-        balances[_buyer] = balances[_buyer] - _numTokens;
+        balances[_buyer] = balances[_buyer] + _numTokens;
         emit Transfer(_owner, _buyer, _numTokens);
         return true;
     }
